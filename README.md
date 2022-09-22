@@ -47,3 +47,239 @@ Pay special attention to what data the frontend is expecting from each API respo
 By making notes ahead of time, you will practice the core skill of being able to read and understand code and will have a simple plan to follow to build out the endpoints of your backend API.
 
 > View the [Frontend README](./frontend/README.md) for more details.
+
+
+## End Points
+
+#### `GET '/categories'`
+
+- Fetches all `categories` in database. A `category` has the following attributes:
+  - `id`: id of the category
+  - `type`: name of the category
+- Request Arguments: None
+- Returns: a json with following key:
+  - `categories`: array of Category
+  - `success`: a boolean to prevent if operation has fail or successfully done.
+
+```json
+{
+  "success": "True",
+  "categories": [
+    {
+      "id": "1",
+      "type": "Sport"
+    },
+    {
+      "id": "2",
+      "type": "Art"
+    }
+  ]
+}
+```
+
+#### `GET '/questions'`
+
+- Fetches all `questions` in database. A `question` has the following attributes:
+  - `id`: id of the question
+  - `category`: id of the category
+  - `question`: the question
+  - `answer`: answer of the question
+  - `difficulty`: complexity of the question
+- Request Arguments: 
+  - `page`: page number to be fetched. a page ca have a maximum of 10 elements. It's nor required.
+- Returns: a json with the following keys:
+  - `categories`: array of Category
+  - `success`: a boolean to prevent if operation has fail or successfully done.
+  - `questions`: array of Question 
+  - `current_category`: current category
+  - `total_questions`: number of questions from database
+
+```json
+{
+  "success": "True",
+  "questions": [
+    {
+      "id": "1",
+      "category": "4",
+      "question": "What movie earned Tom Hanks his third straight Oscar nomination, in 1996?", 
+      "answer": "Apollo 13",
+      "difficulty": "3"
+    },
+    {
+      "id": "2",
+      "category": "3",
+      "question": "What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?", 
+      "answer": "Tom Cruise",
+      "difficulty": "2"
+    }
+  ],
+  "categories": [
+    {
+      "id": "1",
+      "type": "Sport"
+    },
+    {
+      "id": "2",
+      "type": "Art"
+    }
+  ],
+  "current_category": {
+      "id": "1",
+      "type": "Sport"
+    },
+  "total_questions": 15
+}
+```
+
+#### `DELETE '/questions/<question_id>'`
+
+- Delete a question by the `id` in database.
+  - `id`: id of the category
+  - `type`: name of the category
+- Path parameter:
+  - `id`: id of the question
+- Returns: a json with following key:
+  - `message`: inform that operation has successfully done
+  - `success`: a boolean to prevent if operation has fail or successfully done.
+
+```json
+{
+  "success": "True",
+  "message": "Question with id 10 has  deleted successfully"
+}
+```
+
+#### `POST '/questions'`
+
+- Save a `question` in database. A `question` has the following attributes:
+  - `id`: id of the question
+  - `category`: id of the category
+  - `question`: the question
+  - `answer`: answer of the question
+  - `difficulty`: complexity of the question
+- Request body: 
+  - `category`: id of the category. required
+  - `question`: the question. required
+  - `answer`: answer of the question. required
+  - `difficulty`: complexity of the question. required
+- Returns: a json with the following keys:
+  - `categories`: array of Category
+  - `success`: a boolean to prevent if operation has fail or successfully done.
+  - `questions`: array of Question 
+  - `current_category`: current category
+  - `total_questions`: number of questions from database
+
+```json
+{
+  "success": "True",
+  "message": "Question created successfully"
+}
+```
+
+#### `POST '/questions/search'`
+
+- Search `questions` from database with a `searchTerm`. A `question` has the following attributes:
+  - `id`: id of the question
+  - `category`: id of the category
+  - `question`: the question
+  - `answer`: answer of the question
+  - `difficulty`: complexity of the question
+- Request body: 
+  - `searchTerm`: keyword use to search question from database. required
+- Returns: a json with the following keys:
+  - `success`: a boolean to prevent if operation has fail or successfully done.
+  - `questions`: array of Question 
+  - `current_category`: current category
+  - `total_questions`: number of questions fetched from database with the `searchTerm`
+
+```json
+{
+  "success": "True",
+  "questions": [
+    {
+      "id": "1",
+      "category": "4",
+      "question": "What movie earned Tom Hanks his third straight Oscar nomination, in 1996?", 
+      "answer": "Apollo 13",
+      "difficulty": "3"
+    },
+    {
+      "id": "2",
+      "category": "3",
+      "question": "What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?", 
+      "answer": "Tom Cruise",
+      "difficulty": "2"
+    }
+  ],
+  "total_questions": 8
+}
+```
+
+#### `GET '/categories/<category_id>/questions'`
+
+- Fetches all `questions` of specific `category_id` from database. A `question` has the following attributes:
+  - `id`: id of the question
+  - `category`: id of the category
+  - `question`: the question
+  - `answer`: answer of the question
+  - `difficulty`: complexity of the question
+- Path param: 
+  - `catagory_id`: category `id` of questions to fetch from database
+- Returns: a json with the following keys:
+  - `success`: a boolean to prevent if operation has fail or successfully done.
+  - `questions`: array of Question 
+  - `current_category`: current category
+  - `total_questions`: number of questions from database
+
+```json
+{
+  "success": "True",
+  "questions": [
+    {
+      "id": "1",
+      "category": "4",
+      "question": "What movie earned Tom Hanks his third straight Oscar nomination, in 1996?", 
+      "answer": "Apollo 13",
+      "difficulty": "3"
+    },
+    {
+      "id": "2",
+      "category": "3",
+      "question": "What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?", 
+      "answer": "Tom Cruise",
+      "difficulty": "2"
+    }
+  ],
+  "current_category": {
+      "id": "1",
+      "type": "Sport"
+    },
+  "total_questions": 15
+}
+```
+
+
+#### `POST '/quizzes'`
+
+- Search randomly one `question` of given `category` from database. A `question` has the following attributes:
+  - `id`: id of the question
+  - `category`: id of the category
+  - `question`: the question
+  - `answer`: answer of the question
+  - `difficulty`: complexity of the question
+- Request body: 
+  - `previous_questions`: array of previous question fetched from database
+  - `quiz_category`: category by where question will be fetched
+- Returns: a json with the following keys:
+  - `question`: question fetched from database 
+```json
+{
+  "question": {
+      "id": "1",
+      "category": "4",
+      "question": "What movie earned Tom Hanks his third straight Oscar nomination, in 1996?", 
+      "answer": "Apollo 13",
+      "difficulty": "3"
+    }
+}
+```
