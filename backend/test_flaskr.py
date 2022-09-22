@@ -17,7 +17,8 @@ class TriviaTestCase(unittest.TestCase):
         self.database_name = "trivia_test"
         self.username = 'flask'
         self.password = 'flask123'
-        self.database_path = 'postgresql://{}:{}@{}/{}'.format(self.username, self.password, 'localhost:5432', self.database_name)
+        self.database_path = 'postgresql://{}:{}@{}/{}'.format(self.username, self.password, 'localhost:5432',
+                                                               self.database_name)
         setup_db(self.app, self.database_path)
 
         # binds the app to the current context
@@ -85,8 +86,6 @@ class TriviaTestCase(unittest.TestCase):
                 quest = Question(**question)
                 quest.insert()
 
-
-
     def tearDown(self):
         """Executed after reach test"""
         # Question.delete_all()
@@ -103,7 +102,7 @@ class TriviaTestCase(unittest.TestCase):
 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data.get('success'), True)
-        self.assertEqual(len(data.get('categories')), 6)
+        self.assertTrue(data.get('categories'))
 
     def test_get_categories_fail(self):
         res = self.client().get('category')
@@ -129,10 +128,10 @@ class TriviaTestCase(unittest.TestCase):
     def test_delete_question_by_id_success(self):
         # Given
         question = {
-                'question': 'Who discovered penicillin?',
-                'answer': 'Alexander Fleming',
-                'category': 5,
-                'difficulty': 5
+            'question': 'Who discovered penicillin?',
+            'answer': 'Alexander Fleming',
+            'category': 5,
+            'difficulty': 5
         }
         quest = Question(**question)
         quest.insert()
@@ -150,13 +149,13 @@ class TriviaTestCase(unittest.TestCase):
 
     def test_delete_question_by_id_fail(self):
 
-        #Given
+        # Given
         question_id = 10000
 
-        #When
+        # When
         res = self.client().delete('/questions/{}'.format(question_id))
         data = json.loads(res.data)
-        #Then
+        # Then
         self.assertEqual(res.status_code, 404)
         self.assertEqual(data.get('message'), 'Question with id {} not found'.format(question_id))
         self.assertFalse(data.get('success'))
@@ -204,7 +203,7 @@ class TriviaTestCase(unittest.TestCase):
 
         self.assertEqual(res.status_code, 200)
         self.assertTrue(data.get('questions'))
-        self.assertTrue(data.get('totalQuestions'))
+        self.assertTrue(data.get('total_questions'))
 
     def test_search_term_fail(self):
         keyword = {
@@ -228,7 +227,7 @@ class TriviaTestCase(unittest.TestCase):
 
         self.assertEqual(res.status_code, 200)
         self.assertTrue(data.get('questions'))
-        self.assertTrue(data.get('currentCategory'))
+        self.assertTrue(data.get('current_category'))
         self.assertTrue(data.get('success'))
 
     def test_get_questions_by_category_fail(self):
@@ -263,6 +262,7 @@ class TriviaTestCase(unittest.TestCase):
 
         self.assertEqual(res.status_code, 400)
         self.assertEqual(data.get('message'), 'Quiz category is required')
+
 
 # Make the tests conveniently executable
 if __name__ == "__main__":

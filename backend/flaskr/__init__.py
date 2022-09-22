@@ -135,7 +135,7 @@ def create_app(test_config=None):
             return jsonify({
                 'success': True,
                 'questions': questions,
-                'totalQuestions': len(questions)
+                'total_questions': len(questions)
             }), 200
         else:
             abort(400, [{'field': 'term', 'message': 'term to search is required'}])
@@ -157,9 +157,9 @@ def create_app(test_config=None):
         questions = Question.get_questions_by_category_id(category_id)
         return jsonify({
             'success': True,
-            'currentCategory': category,
+            'current_category': category,
             'questions': questions,
-            'totalQuestions': len(questions)
+            'total_questions': len(questions)
         }), 200
 
     """
